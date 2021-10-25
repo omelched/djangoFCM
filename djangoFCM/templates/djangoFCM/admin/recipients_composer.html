@@ -1,0 +1,27 @@
+{% extends 'admin/base.html' %}
+{% block extrahead %}
+{{ media }}
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {% for notification in notifications %}
+            <input type="hidden" name="_selected_action" value="{{ notification.pk }}">
+        {% endfor %}
+        <input type="hidden" name="action" value="compose_recipients">
+        <input type="hidden" name="do_action" value="yes">
+
+        <h2>Compose recipients for notifications:</h2>
+        <div>
+            {% for notification in notifications %}
+                {{ notification.title }}<br>
+            {% endfor %}
+        </div>
+        {% with parameters as composer %}
+            {% include 'djangoFCM/generic/query-composer.html' %}
+        {% endwith %}
+    <input type="submit">
+    </form>
+
+{% endblock %}

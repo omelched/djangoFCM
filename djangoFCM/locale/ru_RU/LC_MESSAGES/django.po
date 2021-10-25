@@ -1,0 +1,168 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-10-25 16:52+0300\n"
+"PO-Revision-Date: 2021-10-25 13:56+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Unknown\n"
+"Language: zxx\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"\n"
+"X-Loco-Source-Locale: ru_RU\n"
+"X-Loco-Parser: loco_parse_po\n"
+"X-Generator: Loco https://localise.biz/"
+
+#: djangoFCM/admin/models/notification.py:151
+msgid "Compose recipients"
+msgstr "Подобрать получателей"
+
+#: djangoFCM/admin/models/notification.py:163
+msgid "payload"
+msgstr "полезная нагрузка"
+
+#: djangoFCM/admin/models/notification.py:171
+msgid "sending info"
+msgstr "информация по отправке"
+
+#: djangoFCM/admin/models/notification.py:179 
+#: djangoFCM/admin/models/push_token.py:37
+msgid "important dates"
+msgstr "важные даты"
+
+#: djangoFCM/admin/models/parameter.py:47 djangoFCM/models/parameter.py:30
+msgid "content types"
+msgstr "Типы контента"
+
+#: djangoFCM/models/notification.py:19 djangoFCM/models/parameter.py:17
+msgid "name"
+msgstr "имя"
+
+#: djangoFCM/models/notification.py:26
+msgid "title"
+msgstr "заголовок"
+
+#: djangoFCM/models/notification.py:33
+msgid "body"
+msgstr "тело"
+
+#: djangoFCM/models/notification.py:38
+msgid "recipients"
+msgstr "получатели"
+
+#: djangoFCM/models/notification.py:45
+msgid "send on date"
+msgstr "отправить на дату"
+
+#: djangoFCM/models/notification.py:50
+msgid "is sent"
+msgstr "отправлено"
+
+#: djangoFCM/models/notification.py:57 djangoFCM/models/push_token.py:29
+msgid "creation date"
+msgstr "Дата создания"
+
+#: djangoFCM/models/notification.py:64
+msgid "task"
+msgstr "задание"
+
+#: djangoFCM/models/notification.py:70
+msgid "notification"
+msgstr "уведомление"
+
+#: djangoFCM/models/notification.py:71
+msgid "notifications"
+msgstr "уведомления"
+
+#: djangoFCM/models/parameter.py:8
+msgid "number"
+msgstr "число"
+
+#: djangoFCM/models/parameter.py:9
+msgid "string"
+msgstr "строка"
+
+#: djangoFCM/models/parameter.py:10
+msgid "foreign key"
+msgstr "внешний ключ"
+
+#: djangoFCM/models/parameter.py:11 djangoFCM/models/parameter.py:80
+msgid "choice"
+msgstr "выбор"
+
+#: djangoFCM/models/parameter.py:25
+msgid "type"
+msgstr "тип"
+
+#: djangoFCM/models/parameter.py:37 djangoFCM/models/parameter.py:74 
+#: djangoFCM/models/push_token.py:65
+msgid "parameter"
+msgstr "параметр"
+
+#: djangoFCM/models/parameter.py:38
+msgid "parameters"
+msgstr "параметры"
+
+#: djangoFCM/models/parameter.py:86
+msgid "parameter and choice"
+msgstr "параметр и выбор"
+
+#: djangoFCM/models/parameter.py:87
+msgid "parameters and choices"
+msgstr "параметры и выборы"
+
+#: djangoFCM/models/push_token.py:16 djangoFCM/models/push_token.py:41 
+#: djangoFCM/models/push_token.py:58
+msgid "push token"
+msgstr "пуш токен"
+
+#: djangoFCM/models/push_token.py:23
+msgid "user"
+msgstr "пользователь"
+
+#: djangoFCM/models/push_token.py:35
+msgid "update date"
+msgstr "дата обновления"
+
+#: djangoFCM/models/push_token.py:42
+msgid "push tokens"
+msgstr "пуш токены"
+
+#: djangoFCM/models/push_token.py:71
+msgid "value"
+msgstr "значение"
+
+#: djangoFCM/models/push_token.py:78
+msgid "content type"
+msgstr "Тип контента"
+
+#: djangoFCM/models/push_token.py:88
+msgid "push token parameter"
+msgstr "параметр пуш токена"
+
+#: djangoFCM/models/push_token.py:89
+msgid "push token parameters"
+msgstr "параметры пуш токена"
+
+#: djangoFCM/templates/djangoFCM/generic/query-composer.html:10
+msgid "Groups"
+msgstr "Группы"
+
+#: djangoFCM/templates/djangoFCM/generic/query-composer.html:13
+msgid "Field"
+msgstr "Поле"
+
+#: djangoFCM/templates/djangoFCM/generic/query-composer.html:16
+msgid "Operation"
+msgstr "Операция"
+
+#: djangoFCM/templates/djangoFCM/generic/query-composer.html:19
+msgid "Value"
+msgstr "Значение"
+
+#: djangoFCM/templates/djangoFCM/generic/query-composer.html:22
+msgid "Delete?"
+msgstr "Удалить?"
