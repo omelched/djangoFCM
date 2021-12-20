@@ -26,7 +26,8 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.forms import ValidationError
 
-from .parameter import Parameter
+from .manager import Manager
+from ..parameter import Parameter
 
 
 class PushToken(models.Model):
@@ -56,7 +57,7 @@ class PushToken(models.Model):
         verbose_name=_('update date'),
     )
 
-    objects = models.Manager()
+    objects = Manager()
 
     class Meta:
         verbose_name = _('push token')
@@ -68,6 +69,15 @@ class PushToken(models.Model):
             return f'{self.push_token[:6]}...{self.push_token[-6:]}'
         else:
             return self.push_token
+
+    def set_parameters(self, data: dict):
+        self.parameters.all().delete()
+
+        for parameter in data:
+            self.parameters.create(
+                parameter=parameter,
+                value=data[parameter]
+            )
 
 
 class PushTokenParameters(models.Model):
