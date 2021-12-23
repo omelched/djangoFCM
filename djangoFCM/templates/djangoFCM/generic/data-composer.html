@@ -1,16 +1,13 @@
-{% load i18n  %}
-<h4>
-    {{ composer.label }}
-</h4>
-{{ composer.formset.management_form }}
-<table class="composer" data-prefix="{{ composer.formset.prefix }}">
+{% load i18n %}
+{{ formset.management_form }}
+<table class="composer" data-prefix="{{ formset.prefix }}">
     <thead>
         <tr>
             <th colspan="3">
                 {% translate "Groups" %}
             </th>
             <th>
-                {% translate "Field" %}
+                {% translate "Attribute" %}
             </th>
             <th>
                 {% translate "Operation" %}
@@ -35,14 +32,14 @@
                     <button type="button">AND</button>
                 </div>
             </td>
-            {% with composer.formset.empty_form as form %}
+            {% with formset.empty_form as form %}
             <td class="group_cell --decorator">
                 <div class="--state --hidden" data-state="AND">
                     {{ form.group_state }}
                 </div>
             </td>
             <td>
-                {{ form.parameter }}
+                {{ form.attribute }}
             </td>
             <td>
                 {{ form.operator }}

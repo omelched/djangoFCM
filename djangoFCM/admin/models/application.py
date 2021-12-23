@@ -20,14 +20,20 @@
 # ******************************************************************************
 
 from django.contrib import admin
-from django.contrib.contenttypes.models import ContentType
-
-from djangoFCM.admin.models import PushTokenAdmin, NotificationAdmin, ApplicationAdmin
-from djangoFCM.models import PushToken, Notification, Application
 
 
-admin.site.register(Application, ApplicationAdmin)
-admin.site.register(PushToken, PushTokenAdmin)
-admin.site.register(Notification, NotificationAdmin)
+class ApplicationAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (
+            None,
+            {
+                'fields': (
+                    'name',
+                )
+            }
+        ),
+    )
 
-admin.site.register(ContentType)
+    list_display = ('name',)
+    search_fields = ('name',)
+    ordering = ('name',)

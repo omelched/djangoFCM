@@ -28,9 +28,11 @@ from django_celery_beat.models import PeriodicTask, ClockedSchedule
 from django.utils import timezone
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
+from picklefield import PickledObjectField
 
-from .push_token import PushToken
-from ..src import fcm_app
+from djangoFCM.models.notification.manager import Manager
+from djangoFCM.models.push_token import PushToken
+from djangoFCM.src import fcm_app
 
 
 class Notification(models.Model):
@@ -62,6 +64,10 @@ class Notification(models.Model):
         verbose_name=_('recipients'),
         blank=True,
     )
+    recipients_composer_conditions = PickledObjectField(
+        null=True,
+        verbose_name=_('recipients composer conditions'),
+    )
     __original_send_on = None
     send_on = models.DateTimeField(
         null=False,
@@ -89,7 +95,7 @@ class Notification(models.Model):
         verbose_name=_('task')
     )
 
-    objects = models.Manager()
+    objects = Manager()
 
     class Meta:
         verbose_name = _('notification')
@@ -110,9 +116,18 @@ class Notification(models.Model):
         super().save(force_insert, force_update, using, update_fields)
         self.__original_send_on = self.send_on
 
-    def send(self):
-        if not self.recipients.exists() or self.sent:
+    def compile_recipients(self):
+        if not self.recipients_composer_conditions:
             raise ValueError
+        # self.recipients_composer_conditions = []
+
+        if len(self.recipients_composer_conditions) == 1:
+            condition = self.recipients_composer_conditions[0]
+            # self.recipients.set(PushToken.objects.filter(**{condition[]}))
+
+    def send(self):
+
+        raise NotImplementedError
 
         tokens = list(self.recipients.values_list('push_token', flat=True))
 

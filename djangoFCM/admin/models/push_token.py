@@ -23,26 +23,6 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from ...models import PushTokenParameters
-
-
-class PushTokenParametersInline(admin.TabularInline):
-    model = PushTokenParameters
-    fieldsets = (
-        (
-            None,
-            {
-                'fields': (
-                    'parameter',
-                    'value',
-                    'content_type',
-                )
-            }
-        ),
-    )
-    extra = 0
-    autocomplete_fields = ('parameter',)
-
 
 class PushTokenAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -51,7 +31,7 @@ class PushTokenAdmin(admin.ModelAdmin):
             {
                 'fields': (
                     'push_token',
-                    'user'
+                    ('user', 'application',)
                 )
             }
         ),
@@ -66,9 +46,9 @@ class PushTokenAdmin(admin.ModelAdmin):
         ),
     )
 
-    list_display = ('shorty', 'user', 'creation_date', 'update_date')
-    search_fields = ('push_token', 'user__username')
-    ordering = ('user', 'creation_date')
-    readonly_fields = ('creation_date', 'update_date')
-    inlines = (PushTokenParametersInline,)
+    list_display = ('short_token', 'user', 'application',)
+    list_filter = ('application',)
+    search_fields = ('push_token', 'user__username', 'application__name',)
+    ordering = ('user', 'creation_date',)
+    readonly_fields = ('creation_date', 'update_date',)
     autocomplete_fields = ('user',)

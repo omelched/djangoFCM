@@ -19,66 +19,27 @@
 #  along with djangoFCM.  If not, see <https://www.gnu.org/licenses/>.         *
 # ******************************************************************************
 
-from django.contrib import admin
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth import get_user_model
 
-from ...models import Parameter, ParameterChoices
-
-
-class ParameterChoicesInline(admin.TabularInline):
-    model = ParameterChoices
-    fieldsets = (
-        (
-            None,
-            {
-                'fields': (
-                    'choice',
-                )
-            }
-        ),
-    )
-    extra = 0
+from djangoFCM.models.push_token.manager import Manager
 
 
-class ParameterAdmin(admin.ModelAdmin):
-    fieldsets = (
-        (
-            None,
-            {
-                'fields': (
-                    'name',
-                    'type',
-                )
-            }
-        ),
+class Application(models.Model):
+    name = models.CharField(
+        max_length=63,
+        blank=False,
+        verbose_name=_('name'),
+        unique=True,
     )
 
-    list_display = ('name', 'type',)
-    list_filter = ('type',)
-    search_fields = ('name',)
-    ordering = ('name', 'type',)
-    filter_vertical = ('content_types',)
-    inlines = ()
+    objects = Manager()
 
-    def get_fieldsets(self, request, obj=None):
+    class Meta:
+        verbose_name = _('application')
+        verbose_name_plural = _('applications')
+        swappable = 'DJANGOFCM_APPLICATION_MODEL'
 
-        if obj and obj.type == Parameter.ParameterTypes.FOREIGN_KEY:
-            return super().get_fieldsets(request, obj) + (
-                (
-                    _('content types'),
-                    {
-                        'fields': (
-                            'content_types',
-                        )
-                    }
-                ),
-            )
-
-        return super().get_fieldsets(request, obj)
-
-    def get_inlines(self, request, obj):
-
-        if obj and obj.type == Parameter.ParameterTypes.CHOICE:
-            return super().get_inlines(request, obj) + (ParameterChoicesInline,)
-
-        return super().get_inlines(request, obj)
+    def __str__(self):
+        return self.name

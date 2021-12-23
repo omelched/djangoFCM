@@ -19,6 +19,6 @@
 #  along with djangoFCM.  If not, see <https://www.gnu.org/licenses/>.         *
 # ******************************************************************************
 
-from .parameter import Parameter, ParameterChoices
-from .push_token import PushToken, PushTokenParameters
+from .application import Application
+from .push_token import PushToken
 from .notification import Notification

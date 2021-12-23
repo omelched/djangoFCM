@@ -1,7 +1,7 @@
 # ******************************************************************************
 #  djangoFCM — Django app which stores, manages FCM push tokens                *
 #  and interacts with them.                                                    *
-#  Copyright (C) 2021-2021 omelched                                            *
+#  Copyright (C) 2021 omelched                                                 *
 #                                                                              *
 #  This file is part of djangoFCM.                                             *
 #                                                                              *
@@ -19,15 +19,4 @@
 #  along with djangoFCM.  If not, see <https://www.gnu.org/licenses/>.         *
 # ******************************************************************************
 
-from django.contrib import admin
-from django.contrib.contenttypes.models import ContentType
-
-from djangoFCM.admin.models import PushTokenAdmin, NotificationAdmin, ApplicationAdmin
-from djangoFCM.models import PushToken, Notification, Application
-
-
-admin.site.register(Application, ApplicationAdmin)
-admin.site.register(PushToken, PushTokenAdmin)
-admin.site.register(Notification, NotificationAdmin)
-
-admin.site.register(ContentType)
+from djangoFCM.forms.data_composer import DataComposerForm

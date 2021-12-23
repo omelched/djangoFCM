@@ -135,6 +135,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # djangoFCM
 DJANGOFCM_FCM_API_KEY = os.environ.get("DJANGOFCM_FCM_API_KEY", "SECRET")
+DJANGOFCM_APPLICATION_MODEL = 'djangoFCM.application'
 
 # celery
 CELERY_ACCEPT_CONTENT = ['application/json']
