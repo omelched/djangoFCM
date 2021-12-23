@@ -67,7 +67,7 @@ class PushTokenAdmin(admin.ModelAdmin):
     )
 
     list_display = ('shorty', 'user', 'creation_date', 'update_date')
-    search_fields = ('push_token', 'user')
+    search_fields = ('push_token', 'user__username')
     ordering = ('user', 'creation_date')
     readonly_fields = ('creation_date', 'update_date')
     inlines = (PushTokenParametersInline,)
