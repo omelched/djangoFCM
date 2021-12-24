@@ -123,11 +123,17 @@ class Notification(models.Model):
 
         if len(self.recipients_composer_conditions) == 1:
             condition = self.recipients_composer_conditions[0]
-            # self.recipients.set(PushToken.objects.filter(**{condition[]}))
+            self.recipients.set(
+                PushToken.objects.filter(
+                    **{
+                        condition['attribute']: condition['value']
+                    }
+                )
+            )
+        else:
+            raise NotImplementedError
 
     def send(self):
-
-        raise NotImplementedError
 
         tokens = list(self.recipients.values_list('push_token', flat=True))
 
@@ -155,7 +161,6 @@ class Notification(models.Model):
 
 @receiver(m2m_changed, sender=Notification.recipients.through)
 def recipients_changed_handler(sender, instance, action, reverse, pk_set, **kwargs):
-
     def _add_task(_instance: Notification):
         clock, _ = ClockedSchedule.objects.get_or_create(
             clocked_time=_instance.send_on
@@ -203,10 +208,10 @@ def recipients_changed_handler(sender, instance, action, reverse, pk_set, **kwar
         if action == 'post_remove':
             # if some m2m were removed (reverse relation)
             no_push_notifications = Notification.objects.filter(
-                pk=pk_set,              # select notifications relations to which were removed
-                recipients=None,        # if no recipients left
-                sent=False,             # and they are not already sent
-                task__isnull=False,     # and task still exists
+                pk=pk_set,  # select notifications relations to which were removed
+                recipients=None,  # if no recipients left
+                sent=False,  # and they are not already sent
+                task__isnull=False,  # and task still exists
             )
 
             for notification in no_push_notifications:
@@ -215,11 +220,10 @@ def recipients_changed_handler(sender, instance, action, reverse, pk_set, **kwar
         if action == 'pre_clear':
             # if all m2m are being cleared (reverse relation)
             no_push_notifications = instance.notifications.annotate(rec_count=models.Count('recipients')).filter(
-                rec_count__lte=1,       # notifications, relations to which to-be-cleared, if that will be last push
-                sent=False,             # and they are not already sent
-                task__isnull=False,     # and task still exists
+                rec_count__lte=1,  # notifications, relations to which to-be-cleared, if that will be last push
+                sent=False,  # and they are not already sent
+                task__isnull=False,  # and task still exists
             )
 
             for notification in no_push_notifications:
                 _delete_task(notification)
-
