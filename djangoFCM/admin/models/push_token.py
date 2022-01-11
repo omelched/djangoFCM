@@ -19,9 +19,11 @@
 #  along with djangoFCM.  If not, see <https://www.gnu.org/licenses/>.         *
 # ******************************************************************************
 
-
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
+from django.db import models
+
+from djangoFCM import get_application_model
 
 
 class PushTokenAdmin(admin.ModelAdmin):
@@ -48,7 +50,16 @@ class PushTokenAdmin(admin.ModelAdmin):
 
     list_display = ('short_token', 'user', 'application',)
     list_filter = ('application',)
-    search_fields = ('push_token', 'user__username', 'application__name',)
+    search_fields = ('push_token', 'user__username',)
     ordering = ('user', 'creation_date',)
     readonly_fields = ('creation_date', 'update_date',)
     autocomplete_fields = ('user',)
+
+    def get_search_fields(self, request):
+        application_fields = get_application_model()._meta.fields
+        searchable_fields_lookups = []
+        for field in application_fields:
+            if isinstance(field, models.CharField) or isinstance(field, models.TextField):
+                searchable_fields_lookups.append(f'application__{field.name}')
+
+        return super(PushTokenAdmin, self).get_search_fields(request) + tuple(searchable_fields_lookups)

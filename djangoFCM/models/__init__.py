@@ -21,4 +21,4 @@
 
 from .application import Application
 from .push_token import PushToken
-from .notification import Notification
+from .notification import Notification, NotificationArgument

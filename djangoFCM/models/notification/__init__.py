@@ -19,4 +19,4 @@
 #  along with djangoFCM.  If not, see <https://www.gnu.org/licenses/>.         *
 # ******************************************************************************
 
-from djangoFCM.models.notification.model import Notification
+from djangoFCM.models.notification.model import Notification, NotificationArgument

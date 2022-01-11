@@ -36,6 +36,11 @@ from djangoFCM.src import fcm_app
 
 
 class Notification(models.Model):
+    class Meta:
+        verbose_name = _('notification')
+        verbose_name_plural = _('notifications')
+        constraints = []
+
     name = models.CharField(
         max_length=63,
         null=False,
@@ -97,11 +102,6 @@ class Notification(models.Model):
 
     objects = Manager()
 
-    class Meta:
-        verbose_name = _('notification')
-        verbose_name_plural = _('notifications')
-        constraints = []
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.__original_send_on = self.send_on
@@ -118,8 +118,8 @@ class Notification(models.Model):
 
     def compile_recipients(self):
         if not self.recipients_composer_conditions:
-            raise ValueError
-        # self.recipients_composer_conditions = []
+            self.recipients.clear()
+            return
 
         if len(self.recipients_composer_conditions) == 1:
             condition = self.recipients_composer_conditions[0]
@@ -136,6 +136,7 @@ class Notification(models.Model):
     def send(self):
 
         tokens = list(self.recipients.values_list('push_token', flat=True))
+        kwargs = {k: v for k, v in self.arguments.all().values_list('key', 'value')}
 
         try:
 
@@ -144,12 +145,14 @@ class Notification(models.Model):
                     registration_id=tokens[0],
                     message_title=self.title,
                     message_body=self.body,
+                    extra_notification_kwargs=kwargs,
                 )
             else:
                 fcm_app.notify_multiple_devices(
                     registration_ids=tokens,
                     message_title=self.title,
                     message_body=self.body,
+                    extra_notification_kwargs=kwargs,
                 )
 
             self.send_on = timezone.now()
@@ -181,9 +184,10 @@ def recipients_changed_handler(sender, instance, action, reverse, pk_set, **kwar
         # save to set 'task' value
 
     def _delete_task(_instance: Notification):
-        _instance.task.delete()
-        _instance.task = None
-        _instance.save()
+        if _instance.task:
+            _instance.task.delete()
+            _instance.task = None
+            _instance.save()
 
     if not reverse:
         if action == 'post_add':
@@ -227,3 +231,40 @@ def recipients_changed_handler(sender, instance, action, reverse, pk_set, **kwar
 
             for notification in no_push_notifications:
                 _delete_task(notification)
+
+
+class NotificationArgument(models.Model):
+    class Meta:
+        verbose_name = _('notification argument')
+        verbose_name_plural = _('notifications\' arguments')
+        constraints = (
+            models.UniqueConstraint(
+                fields=(
+                    'notification',
+                    'key',
+                ),
+                name='unique notification and key',
+            ),
+        )
+
+    notification = models.ForeignKey(
+        Notification,
+        models.CASCADE,
+        related_name='arguments',
+        null=False,
+        verbose_name=_('notification'),
+    )
+    key = models.CharField(
+        max_length=255,
+        null=False,
+        blank=True,
+        editable=True,
+        verbose_name=_('key'),
+    )
+    value = models.CharField(
+        max_length=255,
+        null=False,
+        blank=True,
+        editable=True,
+        verbose_name=_('value'),
+    )

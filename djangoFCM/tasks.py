@@ -30,5 +30,7 @@ logger = get_task_logger(__name__)
 @shared_task
 def send_push_notification(notification_pk):
     notification = Notification.objects.get(pk=notification_pk)
-    notification.compile_recipients()
+    if notification.recipients_composer_conditions:
+        notification.compile_recipients()
+
     notification.send()

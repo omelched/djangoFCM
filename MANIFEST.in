@@ -1,0 +1,7 @@
+include README.md
+include LICENSE
+recursive-include djangoFCM/static *.js *.css
+recursive-include djangoFCM/templates *.html
+recursive-include djangoFCM/locale *.po
+global-exclude __pycache__
+global-exclude *.py[co]

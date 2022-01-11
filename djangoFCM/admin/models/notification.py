@@ -28,7 +28,19 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms import formset_factory, Media, BaseFormSet
 
 from djangoFCM.forms import DataComposerForm
-from djangoFCM.models import PushToken
+from djangoFCM.models import PushToken, NotificationArgument
+
+
+class NotificationArgumentInline(admin.TabularInline):
+    model = NotificationArgument
+    fields = (
+        'key',
+        'value',
+    )
+    ordering = (
+        'key',
+    )
+    extra = 0
 
 
 class NotificationAdmin(admin.ModelAdmin):
@@ -76,7 +88,8 @@ class NotificationAdmin(admin.ModelAdmin):
     ordering = ('send_on', 'title')
     readonly_fields = ('sent', 'creation_date')
     filter_horizontal = ('recipients',)
-    actions = ['compose_recipients']
+    actions = ('compose_recipients',)
+    inlines = (NotificationArgumentInline,)
 
     def get_readonly_fields(self, request, obj=None):
         if obj and obj.sent:
