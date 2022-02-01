@@ -29,11 +29,13 @@ class ApplicationAdmin(admin.ModelAdmin):
             {
                 'fields': (
                     'name',
+                    'messaging_service',
                 )
             }
         ),
     )
 
-    list_display = ('name',)
+    list_display = ('name', 'messaging_service',)
+    list_filter = ('messaging_service',)
     search_fields = ('name',)
-    ordering = ('name',)
+    ordering = ('name', 'messaging_service',)

@@ -27,11 +27,23 @@ from djangoFCM.models.push_token.manager import Manager
 
 
 class Application(models.Model):
+    class MessagingService(models.TextChoices):
+        FCM = 'F', _('Firebase Cloud Messaging')
+        HMS = 'H', _('Huawei Mobile Services')
+
     name = models.CharField(
         max_length=63,
         blank=False,
         verbose_name=_('name'),
         unique=True,
+    )
+    messaging_service = models.CharField(
+        max_length=1,
+        blank=False,
+        null=False,
+        verbose_name=_('messaging service'),
+        choices=MessagingService.choices,
+        default=MessagingService.FCM
     )
 
     objects = Manager()

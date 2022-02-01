@@ -32,7 +32,7 @@ from picklefield import PickledObjectField
 
 from djangoFCM.models.notification.manager import Manager
 from djangoFCM.models.push_token import PushToken
-from djangoFCM.src import fcm_app
+from djangoFCM.src import fcm_app, hms_app
 
 
 class Notification(models.Model):
@@ -135,31 +135,30 @@ class Notification(models.Model):
 
     def send(self):
 
-        tokens = list(self.recipients.values_list('push_token', flat=True))
+        (FCM_tokens, HMS_tokens) = (
+            list(self.recipients.filter(application__messaging_service='F').values_list('push_token', flat=True)),
+            list(self.recipients.filter(application__messaging_service='H').values_list('push_token', flat=True)),
+        )
         kwargs = {k: v for k, v in self.arguments.all().values_list('key', 'value')}
 
-        try:
+        if FCM_tokens:
+            fcm_app.notify_multiple_devices(
+                registration_ids=FCM_tokens,
+                message_title=self.title,
+                message_body=self.body,
+                extra_notification_kwargs=kwargs,
+            )
+        if HMS_tokens:
+            hms_app.notify_multiple_devices(
+                registration_ids=FCM_tokens,
+                message_title=self.title,
+                message_body=self.body,
+                data=kwargs,
+            )
 
-            if len(tokens) == 1:
-                fcm_app.notify_single_device(
-                    registration_id=tokens[0],
-                    message_title=self.title,
-                    message_body=self.body,
-                    extra_notification_kwargs=kwargs,
-                )
-            else:
-                fcm_app.notify_multiple_devices(
-                    registration_ids=tokens,
-                    message_title=self.title,
-                    message_body=self.body,
-                    extra_notification_kwargs=kwargs,
-                )
-
-            self.send_on = timezone.now()
-            self.sent = True
-            self.save()
-        except FCMError as e:
-            raise e
+        self.send_on = timezone.now()
+        self.sent = True
+        self.save()
 
 
 @receiver(m2m_changed, sender=Notification.recipients.through)
