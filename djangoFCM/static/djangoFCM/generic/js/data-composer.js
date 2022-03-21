@@ -151,15 +151,28 @@ function formset() {
 function setForeignKeyInterpreter() {
 
   function refreshValueInput(e) {
+
+
+
     e.preventDefault();
     let attributeSelect = $(e.target)[0];
     let rowNumber = /id_form-(\d*)/g.exec(attributeSelect.id)[1];
     let baseModel = metadata.find(model => model.name === 'PushToken');
-    let field = baseModel.fields.find(field => field.name === attributeSelect.value);
+    let descriptors = attributeSelect.value.split('__');
 
-    if (field.type === 'foreign-key') {
+    let currentModel = baseModel;
+    let prevModel;
+    let currentField;
+
+    for (let descriptor of descriptors) {
+      currentField = currentModel.fields.find(field => field.name === descriptor);
+      prevModel = currentModel;
+      currentModel = metadata.find(model => model.name === currentField.attributes.to);
+    }
+
+    if (currentField.type === 'foreign-key') {
       let selectWidget = showValueSelect(rowNumber);
-      fillChoicesValueSelect(selectWidget, baseModel, field)
+      fillChoicesValueSelect(selectWidget, prevModel, currentField)
     } else {
       showValueInput(rowNumber);
     }
