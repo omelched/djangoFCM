@@ -24,7 +24,7 @@ from django.conf import settings
 from django.http import HttpRequest
 from django.shortcuts import render
 from django.db.models import QuerySet
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.forms import formset_factory, Media, BaseFormSet
 
 from djangoFCM.forms import DataComposerForm

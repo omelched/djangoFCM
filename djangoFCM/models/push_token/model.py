@@ -21,7 +21,7 @@
 
 from django.conf import settings
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 
 from djangoFCM.models.push_token.manager import Manager

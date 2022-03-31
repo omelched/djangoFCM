@@ -22,7 +22,7 @@
 import json
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from pyfcm.errors import FCMError
 from django_celery_beat.models import PeriodicTask, ClockedSchedule
 from django.utils import timezone
