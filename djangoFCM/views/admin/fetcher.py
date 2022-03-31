@@ -7,26 +7,28 @@ from django.views.generic.list import BaseListView
 class DataFetcherJsonView(BaseListView):
     """Handle DataComposer's requests for data."""
     paginate_by = None
+    admin_site = None
+    model_admin = None
 
     def get(self, request, *args, **kwargs):
 
         if not self.has_perm(request):
             raise PermissionDenied
 
-        self.model = self.process_request(request)
+        self.model, self.model_admin = self.process_request(request)
         return JsonResponse(
             {
                 'results': [
                     {
                         'key': i.pk,
                         'name': str(i)
-                    } for i in self.get_queryset()
+                    } for i in self.model_admin.get_queryset(self.request)
                 ]
             },
             json_dumps_params={'indent': 2}
         )
-    @staticmethod
-    def process_request(request: HttpRequest):
+
+    def process_request(self, request: HttpRequest):
         try:
             model_name = request.GET['model_name']
             field_name = request.GET['field_name']
@@ -52,7 +54,8 @@ class DataFetcherJsonView(BaseListView):
         except AttributeError as e:
             raise PermissionDenied from e
 
-        return remote_model
+        model_admin = self.admin_site._registry[remote_model]
+        return remote_model, model_admin
 
     def has_perm(self, request: HttpRequest):
         """Check if user has permission to access the related model."""
