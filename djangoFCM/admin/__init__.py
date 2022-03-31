@@ -21,6 +21,7 @@
 
 from django.contrib import admin
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.admin.sites import AlreadyRegistered
 
 from djangoFCM.admin.models import PushTokenAdmin, NotificationAdmin, ApplicationAdmin
 from djangoFCM.models import PushToken, Notification, Application
@@ -30,4 +31,9 @@ admin.site.register(Application, ApplicationAdmin)
 admin.site.register(PushToken, PushTokenAdmin)
 admin.site.register(Notification, NotificationAdmin)
 
-admin.site.register(ContentType)
+
+try:
+    admin.site.register(ContentType)
+except AlreadyRegistered:
+    pass
+
