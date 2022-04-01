@@ -1,0 +1,54 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'cal/css/styles.css' %}">
+{% block extrahead %}
+{{ media }}
+{% endblock %}
+
+{% block content %}
+    <table class="calendar">
+        <tr>
+            <th colspan="7" class="calendar-month-header">
+                <div class="calendar-month-item">
+                    <a class="btn btn-info left" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
+                    <div>
+                        {{ calendar.month_name }}
+                    </div>
+                    <a class="btn btn-info right" href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
+                </div>
+            </th>
+        </tr>
+        <tr>
+            {% for weekday in calendar.weekdays %}
+                <th class="calendar-weekday-header">
+                    {{ weekday }}
+                </th>
+            {% endfor %}
+        </tr>
+        {% for week in calendar.weeks %}
+            <tr>
+                {% for day in week %}
+                    <td>
+                        <div class="calendar-events">
+                            {% if day.0 %}
+                                {{ day.0 }}
+                            {% endif %}
+                            {% for event in day.1 %}
+                                {% if event.is_sent %}
+                                    <div class="calendar-events-item --sent">
+                                        {{ event.title }}
+                                    </div>
+                                {% else %}
+                                    <div class="calendar-events-item --pending">
+                                        <h3>{{ event.time }} — {{ event.title }}</h3>
+                                        <p>{{ event.body }}</p>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

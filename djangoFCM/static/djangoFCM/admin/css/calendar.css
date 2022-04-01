@@ -1,0 +1,60 @@
+#content {
+  height: 100%;
+  /*padding: 0 20px 0;*/
+}
+
+.calendar {
+  height: 100%;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.calendar-month-header {
+  text-align: center;
+  font-size: 2em;
+}
+
+.calendar-month-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.calendar-month-header .calendar-weekday-header {
+  height: 100%;
+}
+
+.calendar td,th {
+  overflow-x: hidden;
+}
+.calendar th {
+  height: 0;
+  padding: 12px;
+}
+
+.calendar-events {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.calendar-events-item {
+  border-radius: 6px;
+  padding: 0 6px;
+  margin: 3px;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-events-item h3, p {
+  margin: 0;
+}
+
+.--sent {
+  background-color: rgba(85, 107, 47, 0.6);
+}
+
+.--pending {
+  background-color: rgba(205, 92, 92, 0.6);
+}
