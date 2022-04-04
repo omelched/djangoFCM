@@ -90,6 +90,7 @@ class NotificationAdmin(admin.ModelAdmin):
     filter_horizontal = ('recipients',)
     actions = ('compose_recipients',)
     inlines = (NotificationArgumentInline,)
+    change_list_template = 'djangoFCM/admin/notification_changelist.html'
 
     def get_readonly_fields(self, request, obj=None):
         if obj and obj.sent:
