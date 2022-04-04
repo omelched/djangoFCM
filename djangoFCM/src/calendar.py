@@ -1,6 +1,6 @@
+import pytz
 from calendar import Calendar, month_name, day_name
 
-import pytz
 from django.utils import timezone
 
 

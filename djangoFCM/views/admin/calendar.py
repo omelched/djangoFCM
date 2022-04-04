@@ -1,11 +1,12 @@
-from datetime import datetime, timedelta
 import calendar
+from datetime import datetime, timedelta
 
-from django.http import HttpRequest
-from django.views import generic
 from django.conf import settings
+from django.contrib.auth.views import redirect_to_login
 from django.forms import Media
-from django.core.exceptions import PermissionDenied
+from django.http import HttpRequest
+from django.urls import reverse
+from django.views import generic
 
 from djangoFCM.models import Notification
 from djangoFCM.src.calendar import DjangoCalendar
@@ -17,13 +18,15 @@ class CalendarView(generic.ListView):
 
     def get(self, request, *args, **kwargs):
         if not self.has_perm(request):
-            raise PermissionDenied
+            return redirect_to_login(
+                request.get_full_path(),
+                reverse('admin:login',),
+            )
         return super().get(request, *args, **kwargs)
 
     def has_perm(self, request: HttpRequest):
         """Check if user has permission to access the related model."""
-        # return request.user and request.user.is_staff
-        return True
+        return request.user and request.user.is_staff
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
