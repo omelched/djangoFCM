@@ -23,10 +23,9 @@ import json
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from pyfcm.errors import FCMError
 from django_celery_beat.models import PeriodicTask, ClockedSchedule
 from django.utils import timezone
-from django.db.models.signals import m2m_changed
+from django.db.models.signals import m2m_changed, post_delete
 from django.dispatch import receiver
 from picklefield import PickledObjectField
 
@@ -159,6 +158,12 @@ class Notification(models.Model):
         self.send_on = timezone.now()
         self.sent = True
         self.save()
+
+
+@receiver(post_delete, sender=Notification)
+def notification_deleted_handler(sender, instance, using, **kwargs):
+    if instance.task:
+        instance.task.delete()
 
 
 @receiver(m2m_changed, sender=Notification.recipients.through)
