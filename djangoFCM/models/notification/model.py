@@ -28,6 +28,7 @@ from django.utils import timezone
 from django.db.models.signals import m2m_changed, post_delete
 from django.dispatch import receiver
 from picklefield import PickledObjectField
+from django.contrib.auth import get_user_model
 
 from djangoFCM.models.notification.manager import Manager
 from djangoFCM.models.push_token import PushToken
@@ -97,6 +98,15 @@ class Notification(models.Model):
         related_name='notification',
         null=True,
         verbose_name=_('task')
+    )
+    author = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.SET_NULL,
+        related_name='notifications',
+        null=True,
+        blank=True,
+        editable=False,
+        verbose_name=_('author'),
     )
 
     objects = Manager()

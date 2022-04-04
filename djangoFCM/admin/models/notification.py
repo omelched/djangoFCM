@@ -73,10 +73,11 @@ class NotificationAdmin(admin.ModelAdmin):
             }
         ),
         (
-            _('important dates'),
+            _('important info'),
             {
                 'fields': (
                     'creation_date',
+                    'author',
                 )
             }
         )
@@ -86,7 +87,7 @@ class NotificationAdmin(admin.ModelAdmin):
     list_filter = ('sent',)
     search_fields = ('name', 'title', 'body', 'send_on', 'recipients')
     ordering = ('send_on', 'title')
-    readonly_fields = ('sent', 'creation_date')
+    readonly_fields = ('sent', 'creation_date', 'author')
     filter_horizontal = ('recipients',)
     actions = ('compose_recipients',)
     inlines = (NotificationArgumentInline,)
@@ -105,6 +106,10 @@ class NotificationAdmin(admin.ModelAdmin):
             max_num=1,
         )
         return FormSet(data)
+
+    def save_model(self, request, obj, form, change):
+        obj.author = request.user
+        super(NotificationAdmin, self).save_model(request, obj, form, change)
 
     def compose_recipients(self, request: HttpRequest, queryset: QuerySet):
         if 'do_action' in request.POST:
