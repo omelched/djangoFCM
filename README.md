@@ -21,6 +21,7 @@ work with "little-to-no" configuring and changes to Django project.
 - compose recipients via UI based on user-specified conditions
 - watch notifications schedule on calendar 
 - send scheduled push notifications
+- store applications as swappable model
 
 ### Usage example
 
@@ -120,6 +121,9 @@ Provide FCM api key via `DJANGOFCM_FCM_API_KEY` in your Django project `settings
 Provide HMS credentials via `DJANGOFCM_HMS_CLIENT_ID`, `DJANGOFCM_HMS_SECRET`, `DJANGOFCM_HMS_PROJECT_ID`
 in your Django project `settings.py`.
 
+If your server has its own model to store Applications — specify model identifier
+(e.g. `your_app.better_application_model`) in `DJANGOFCM_APPLICATION_MODEL` in your Django project `settings.py`.
+
 #### Celery
 
 Make sure to point celery to `djangoFCM.tasks.send_push_notification` task. 
@@ -147,6 +151,18 @@ venv/bin/celery -A sample_project beat -l INFO --scheduler django_celery_beat.sc
 
 Official [documentation](https://docs.celeryproject.org/en/stable/userguide/periodic-tasks.html#using-custom-scheduler-classes)
 on custom schedulers.
+
+#### Migrations
+
+Execute database migrations:
+```shell
+python sample_project/manage.py migrate
+```
+
+Collect static:
+```shell
+python sample_project/manage.py collectstatic
+```
 
 ## Authors
 
