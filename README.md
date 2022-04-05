@@ -1,10 +1,10 @@
-# djangoFCM<sup><sup>_v0.1.0_</sup></sup>
+# djangoFCM<sup><sup>_v0.4.9_</sup></sup>
 
-Django app which stores, manages FCM push tokens and interacts with them.
+Django app which stores, manages Firebase Cloud Messaging and Huawei Messaging Service push tokens and interacts with them.
 
 ## Description
 
-**djangoFCM** is Django-compatible application which stores FCM push tokens,
+**djangoFCM** is Django-compatible application which stores FCM and HMS push tokens,
 their parameters, and automates push notifications routines.
 
 Main feature is for **djangoFCM** to be a "plug-in" Django application, thus capable to 
@@ -12,14 +12,15 @@ work with "little-to-no" configuring and changes to Django project.
 
 ### Features
 
-**djangoFCM** @ [v0.1.0](https://github.com/omelched/djangoFCM/releases/tag/v0.1.0) can:
+**djangoFCM** @ [v0.4.9](https://github.com/omelched/djangoFCM/releases/tag/v0.4.9) can:
 
- - store push tokens
- - store push tokens` arbitrary parameters with types:
-   - foreign key
- - store push notifications
- - send scheduled push notifications
- - compose recipients for push notifications based on user-specified conditions
+- store push tokens from FCM or HMS
+- link push tokens with their users and applications
+- store push notifications
+- store push notifications extra kwargs (e.g. deeplinks)
+- compose recipients via UI based on user-specified conditions
+- watch notifications schedule on calendar 
+- send scheduled push notifications
 
 ### Usage example
 
@@ -45,6 +46,8 @@ to provide `celery` and `celerybeat` processes and message broker (e.g. `rabbitM
 * `django~=3.2.8` <sub><sub>might work on lesser versions, not tested</sub></sub>
 * `django-celery-beat~=2.2.1` <sub><sub>might work on lesser versions, not tested</sub></sub>
 * `pyfcm~=1.5.4` <sub><sub>might work on lesser versions, not tested</sub></sub>
+* `pyhcm~=1.0.6.4` <sub><sub>might work on lesser versions, not tested</sub></sub>
+* `django-picklefield~=3.0.1` <sub><sub>might work on lesser versions, not tested</sub></sub>
 
 #### Django applications
 
@@ -113,6 +116,9 @@ sys.path.append('</path/to/django/project/apps>')
 ```
 
 Provide FCM api key via `DJANGOFCM_FCM_API_KEY` in your Django project `settings.py`.
+
+Provide HMS credentials via `DJANGOFCM_HMS_CLIENT_ID`, `DJANGOFCM_HMS_SECRET`, `DJANGOFCM_HMS_PROJECT_ID`
+in your Django project `settings.py`.
 
 #### Celery
 
