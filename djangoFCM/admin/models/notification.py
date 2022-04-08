@@ -85,7 +85,7 @@ class NotificationAdmin(admin.ModelAdmin):
 
     list_display = ('name', 'title', 'send_on', 'sent')
     list_filter = ('sent',)
-    search_fields = ('name', 'title', 'body', 'send_on', 'recipients')
+    search_fields = ('name', 'title', 'body', 'send_on', 'recipients__pk')
     ordering = ('send_on', 'title')
     readonly_fields = ('sent', 'creation_date', 'author')
     filter_horizontal = ('recipients',)
