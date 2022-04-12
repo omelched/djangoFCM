@@ -10,6 +10,9 @@ class DjangoCalendar(Calendar):
     queryset = None
     date_lookup_name = None
 
+    def get_event_kwargs(self, event):
+        return {}
+
     def __init__(self, year, month, queryset, date_lookup_name) -> None:
         super().__init__()
 
@@ -32,6 +35,7 @@ class DjangoCalendar(Calendar):
                         'title': event.title or event.name,
                         'body': event.body,
                         'is_sent': event.sent,
+                        'kwargs': self.get_event_kwargs(event),
                     }
                     for event in self.queryset.filter(**{f'{self.date_lookup_name}__day': day[0]})
                 ]

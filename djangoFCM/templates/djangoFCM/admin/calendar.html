@@ -36,7 +36,11 @@
                             {% for event in day.1 %}
                                 {% if event.is_sent %}
                                     <div class="calendar-events-item --sent">
-                                        {{ event.title }}
+                                        <h3>{{ event.time }} — {{ event.title }}</h3>
+                                        <p>{{ event.body }}</p>
+                                        {% for key, value in event.kwargs.items %}
+                                            <p>{{ key }}: {{ value }}</p>
+                                        {% endfor %}
                                     </div>
                                 {% else %}
                                     <div class="calendar-events-item --pending">
