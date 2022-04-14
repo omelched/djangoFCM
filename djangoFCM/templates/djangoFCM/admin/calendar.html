@@ -46,6 +46,9 @@
                                     <div class="calendar-events-item --pending">
                                         <h3>{{ event.time }} — {{ event.title }}</h3>
                                         <p>{{ event.body }}</p>
+                                        {% for key, value in event.kwargs.items %}
+                                            <p>{{ key }}: {{ value }}</p>
+                                        {% endfor %}
                                     </div>
                                 {% endif %}
                             {% endfor %}
