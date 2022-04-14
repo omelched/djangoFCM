@@ -15,12 +15,13 @@ from djangoFCM.src.calendar import DjangoCalendar
 class CalendarView(generic.ListView):
     template_name = 'djangoFCM/admin/calendar.html'
     queryset = Notification.objects.all()
+    calendar_class = DjangoCalendar
 
     def get(self, request, *args, **kwargs):
         if not self.has_perm(request):
             return redirect_to_login(
                 request.get_full_path(),
-                reverse('admin:login',),
+                reverse('admin:login', ),
             )
         return super().get(request, *args, **kwargs)
 
@@ -35,10 +36,10 @@ class CalendarView(generic.ListView):
         d = get_date(self.request.GET.get('month', None))
 
         # Instantiate our calendar class with today's year and date
-        cal = DjangoCalendar(d.year,
-                             d.month,
-                             self.queryset.filter(send_on__month=d.month, send_on__year=d.year),
-                             'send_on')
+        cal = self.calendar_class(d.year,
+                                  d.month,
+                                  self.queryset.filter(send_on__month=d.month, send_on__year=d.year),
+                                  'send_on')
         context['calendar'] = cal.to_context()
 
         extra = '' if settings.DEBUG else '.min'
@@ -55,7 +56,6 @@ class CalendarView(generic.ListView):
 
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
-        return context
 
         return context
 
@@ -69,14 +69,14 @@ def get_date(req_day):
 
 def prev_month(d):
     first = d.replace(day=1)
-    prev_month = first - timedelta(days=1)
-    month = 'month=' + str(prev_month.year) + '-' + str(prev_month.month)
+    _prev_month = first - timedelta(days=1)
+    month = 'month=' + str(_prev_month.year) + '-' + str(_prev_month.month)
     return month
 
 
 def next_month(d):
     days_in_month = calendar.monthrange(d.year, d.month)[1]
     last = d.replace(day=days_in_month)
-    next_month = last + timedelta(days=1)
-    month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
+    _next_month = last + timedelta(days=1)
+    month = 'month=' + str(_next_month.year) + '-' + str(_next_month.month)
     return month

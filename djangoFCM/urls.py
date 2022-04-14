@@ -8,5 +8,4 @@ from djangoFCM.views.admin.calendar import CalendarView
 urlpatterns = (
     path("admin/metadata",  MetadataJsonView.as_view(), name='metadata'),
     path("admin/fetcher",   DataFetcherJsonView.as_view(admin_site=admin.site), name='fetcher'),
-    path("admin/calendar",  CalendarView.as_view(), name='calendar'),
 )
